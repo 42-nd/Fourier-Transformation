@@ -13,7 +13,7 @@ using namespace chrono;
 
 double epsilon = 1e-8; // Порог для округления к нулю
 
-void save_to_file(vector<complex<double>> original_data, vector<complex<double>> filtered_data, string filename) {
+void save_to_file(const vector<complex<double>>& original_data, const vector<complex<double>>& filtered_data, string filename) {
     ofstream file(filename);
     if (file.is_open()) {
         file << "Index,Original Data,Filtered Data\n"; 
@@ -40,17 +40,17 @@ double calculate_amplitude(complex<double> z) {
 double calculate_phase(complex<double> z) {
     double x = z.real();
     double y = z.imag();
-    if (x > 0) {
+    if (fabs(x) > epsilon) {
         return atan(y / x);
     }
-    else if (x < 0 && y >= 0) {
+    else if (fabs(x) < epsilon && fabs(y) >= epsilon) {
         return PI + atan(y / x);
     }
-    else if (x < 0 && y < 0) {
+    else if (fabs(x) < epsilon && fabs(y) < epsilon) {
         return atan(y / x) - PI;
     }
-    else if (x == 0) {
-        if (y < 0) {
+    else if (fabs(x) < epsilon) {
+        if (fabs(y) < epsilon) {
             return -PI / 2;
         }
         else {
@@ -60,16 +60,8 @@ double calculate_phase(complex<double> z) {
 
 }
 
-void analyze_spectrum(vector<complex<double>> spectrum) {
-    cout << "Frequency\tAmplitude\tPhase" << endl;
-    for (int i = 0; i < spectrum.size(); i++) { 
-        double amplitude = calculate_amplitude(spectrum[i]);
-        double phase = calculate_phase(spectrum[i]);
-        cout << i << "\t\t" << format_value(amplitude) << "\t\t" << format_value(phase) << endl;
-    }
-}
 
-void analyze_signal(vector<complex<double>> spectrum) {
+void analyze_signal(const vector<complex<double>>& spectrum) {
     int N = spectrum.size();
     int significant_frequencies = 0;
     double threshold = 1e-3; // Порог для значимой амплитуды

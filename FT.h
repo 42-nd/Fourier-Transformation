@@ -13,14 +13,14 @@ using namespace std;
 
 class FourierTransform {
 public:
-    FourierTransform(vector<complex<double>> data) : data(data), N(data.size()) {}
+    FourierTransform(const vector<complex<double>>& data) : data(data), N(data.size()) {}
 
     vector<complex<double>> DFT();
     vector<complex<double>> IDFT();
     vector<complex<double>> FFT();
     vector<complex<double>> IFFT();
 
-    void change_data(vector<complex<double>> new_data);
+    void change_data(const vector<complex<double>>& new_data);
 
 private:
 	vector<complex<double>> data;

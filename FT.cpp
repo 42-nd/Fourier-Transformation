@@ -1,6 +1,6 @@
 #include "FT.h"
 
-void FourierTransform::change_data(vector<complex<double>> new_data) {
+void FourierTransform::change_data(const vector<complex<double>>& new_data) {
     data = new_data;
 	N = new_data.size();
 }
